@@ -21,7 +21,7 @@ class EarlyFusion(nn.Module):
         self.model = SegformerForSemanticSegmentation.from_pretrained(
             model_name, num_labels=num_classes, ignore_mismatched_sizes=True
         )
-        # Modify first convolution for 4-channel input (RGB + Depth)
+        
         old_conv = self.model.segformer.encoder.patch_embeddings[0].proj
         new_conv = nn.Conv2d(4, old_conv.out_channels,
                              kernel_size=old_conv.kernel_size,
@@ -46,7 +46,7 @@ class LateFusion(nn.Module):
         self.depth_encoder = SegformerForSemanticSegmentation.from_pretrained(
             model_name, num_labels=num_classes, ignore_mismatched_sizes=True
         )
-        # Adapt depth encoder for 1-channel input
+       
         old_conv = self.depth_encoder.segformer.encoder.patch_embeddings[0].proj
         new_conv = nn.Conv2d(1, old_conv.out_channels,
                              kernel_size=old_conv.kernel_size,
@@ -98,7 +98,7 @@ class CrossAttentionFusion(nn.Module):
         self.depth_encoder = SegformerForSemanticSegmentation.from_pretrained(
             model_name, num_labels=num_classes, ignore_mismatched_sizes=True
         )
-        # Adapt depth encoder for 1-channel input
+        
         old_conv = self.depth_encoder.segformer.encoder.patch_embeddings[0].proj
         new_conv = nn.Conv2d(1, old_conv.out_channels,
                              kernel_size=old_conv.kernel_size,
@@ -109,7 +109,7 @@ class CrossAttentionFusion(nn.Module):
             new_conv.bias.data = old_conv.bias
         self.depth_encoder.segformer.encoder.patch_embeddings[0].proj = new_conv
 
-        self.cross_attn = CrossModalAttention(channels=512)  # SegFormer-B2 final dimension
+        self.cross_attn = CrossModalAttention(channels=512) 
         self.fusion_head = nn.Sequential(
             nn.Conv2d(1024, 512, kernel_size=1), nn.ReLU(),
             nn.Conv2d(512, 256, kernel_size=3, padding=1), nn.ReLU(),
