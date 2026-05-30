@@ -1,4 +1,4 @@
-#train_rgb
+#train_rgb.py
 """
 RGB baseline training with 8-fold cross-validation
 """
