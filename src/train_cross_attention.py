@@ -1,4 +1,3 @@
-#train_cross_attention.py
 """
 Cross-attention fusion training with 8-fold cross-validation
 """
@@ -97,7 +96,6 @@ def train_fold(config, train_ds, val_ds, test_ds, fold_id, test_seq, device):
 
         scheduler.step()
 
-        # Validation
         model.eval()
         val_m = RoadMetrics()
         with torch.no_grad():
@@ -119,7 +117,6 @@ def train_fold(config, train_ds, val_ds, test_ds, fold_id, test_seq, device):
             best_iou = val_metrics['road_iou']
             best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
 
-    # Test
     if best_state:
         model.load_state_dict(best_state)
     model.eval()
@@ -189,7 +186,6 @@ def main():
         with open(progress_file, 'w') as f:
             json.dump(all_results, f, indent=2)
 
-    # Final summary
     if all_results:
         ious = [all_results[s]['road_iou'] for s in sequences if s in all_results]
         print(f"\n{'='*80}\nCROSS-ATTENTION SUMMARY ({len(ious)}/8 folds)\n{'='*80}")
