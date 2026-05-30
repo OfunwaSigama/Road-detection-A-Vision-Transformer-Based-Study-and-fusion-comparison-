@@ -1,4 +1,3 @@
-#evaluate.py
 """
 Evaluate a trained model on a given test sequence.
 Usage: python evaluate.py --model_type rgb --checkpoint path.pth --test_seq 0002
