@@ -1,4 +1,3 @@
-#train_rgb.py
 """
 RGB baseline training with 8-fold cross-validation
 """
@@ -14,7 +13,6 @@ from pathlib import Path
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-# Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.datasets import Kitti360RGBDataset
 from src.metrics import RoadMetrics
@@ -102,7 +100,6 @@ def train_fold(config, train_ds, val_ds, test_ds, fold_id, test_seq, device):
 
         scheduler.step()
 
-        # Validation
         model.eval()
         val_m = RoadMetrics()
         with torch.no_grad():
@@ -122,7 +119,6 @@ def train_fold(config, train_ds, val_ds, test_ds, fold_id, test_seq, device):
             best_iou = val_metrics['road_iou']
             best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
 
-    # Test with best model
     if best_state:
         model.load_state_dict(best_state)
     model.eval()
@@ -149,12 +145,11 @@ def train_fold(config, train_ds, val_ds, test_ds, fold_id, test_seq, device):
     return results
 
 def main():
-    # Load config from environment or default
+
     config_path = Path(__file__).parent.parent / "configs" / "default.yaml"
     with open(config_path) as f:
         config = yaml.safe_load(f)
 
-    # Get KITTI-360 root from environment
     data_root = os.environ.get("KITTI360_ROOT")
     if data_root is None:
         raise RuntimeError("Please set environment variable KITTI360_ROOT to your KITTI-360 dataset path.")
@@ -194,7 +189,6 @@ def main():
         with open(progress_file, 'w') as f:
             json.dump(all_results, f, indent=2)
 
-    # Final summary
     if all_results:
         ious = [all_results[s]['road_iou'] for s in sequences if s in all_results]
         print(f"\n{'='*80}\nFINAL SUMMARY ({len(ious)}/8 folds)\n{'='*80}")
