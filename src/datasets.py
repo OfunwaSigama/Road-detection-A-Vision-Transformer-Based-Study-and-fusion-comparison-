@@ -117,7 +117,7 @@ class Kitti360FusionDataset(Dataset):
         lbl = cv2.imread(str(lbl_path), cv2.IMREAD_UNCHANGED)
         mask = (lbl == 7).astype(np.uint8)
         depth = np.load(depth_path).astype(np.float32)
-        depth = np.clip(depth, 0, 80.0) / 80.0  # normalize to [0,1]
+        depth = np.clip(depth, 0, 80.0) / 80.0
 
         rgb_aug = self.rgb_transform(image=img)
         depth_uint8 = (depth * 255).astype(np.uint8)
@@ -131,5 +131,5 @@ class Kitti360FusionDataset(Dataset):
         if self.fusion_type == 'early':
             rgbd = torch.cat([rgb_aug['image'], depth_tensor], dim=0)
             return rgbd, mask_tensor
-        else:  # late or cross_attention
+        else: 
             return {'rgb': rgb_aug['image'], 'depth': depth_tensor, 'mask': mask_tensor}
