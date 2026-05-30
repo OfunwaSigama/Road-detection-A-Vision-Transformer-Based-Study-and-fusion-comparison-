@@ -216,3 +216,33 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project-specific ignores for Camera-LiDAR fusion study
+
+# Large data directories (never commit)
+data/
+depth_maps/
+depth_maps_balanced_48k/
+depth_maps_improved/
+visualizations/
+visualizations_improved/
+fusion_road_detection/
+fusion_comparison_simple/
+
+# Model checkpoints and results
+checkpoints/
+results/
+*.pth
+*.pt
+*.bin
+
+# Generated depth maps (numpy arrays)
+*.npy
+
+# Log files
+*.log
+wandb/   # if you ever use wandb
+
+# IDE / OS clutter
+.DS_Store
+Thumbs.db
