@@ -1,4 +1,3 @@
-#train_fusion.py
 """
 Early and Late Fusion training with 8-fold cross-validation
 """
@@ -105,7 +104,6 @@ def train_fold(config, train_ds, val_ds, test_ds, fold_id, test_seq, fusion_type
 
         scheduler.step()
 
-        # Validation
         model.eval()
         val_m = RoadMetrics()
         with torch.no_grad():
@@ -131,7 +129,6 @@ def train_fold(config, train_ds, val_ds, test_ds, fold_id, test_seq, fusion_type
             best_iou = val_metrics['road_iou']
             best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
 
-    # Test
     if best_state:
         model.load_state_dict(best_state)
     model.eval()
@@ -210,7 +207,6 @@ def main():
             with open(progress_file, 'w') as f:
                 json.dump(all_results, f, indent=2)
 
-        # Summary
         if all_results:
             ious = [all_results[s]['road_iou'] for s in sequences if s in all_results]
             print(f"\n{fusion_type.upper()} SUMMARY:")
