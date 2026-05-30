@@ -1,0 +1,27 @@
+# Configuration for Camera-LiDAR fusion experiments
+data:
+  # Set environment variable KITTI360_ROOT before running
+  root: ${KITTI360_ROOT}
+  depth_dir: "depth_maps/numpy"
+  image_size: [512, 192]   # width, height
+
+training:
+  batch_size: 16
+  epochs: 10
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  gradient_clip: 1.0
+  warmup_epochs: 2
+  logit_clip: 50.0
+  loss_clip: 10.0
+  num_workers: 4
+  seed: 42
+
+models:
+  rgb: true
+  early_fusion: true
+  late_fusion: true
+  cross_attention: true
+
+cross_validation:
+  sequences: ["0000","0002","0003","0005","0006","0007","0009","0010"]
