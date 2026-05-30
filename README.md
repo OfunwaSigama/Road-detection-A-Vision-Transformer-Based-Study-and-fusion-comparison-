@@ -20,3 +20,4 @@ Requirements
 Install all dependencies with:
 ```bash
 pip install -r requirements.txt
+<img width="759" height="1334" alt="image" src="https://github.com/user-attachments/assets/556bf232-4120-4389-9c1e-7143f31091a4" />
